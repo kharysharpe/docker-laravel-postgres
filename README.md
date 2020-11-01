@@ -1,8 +1,9 @@
-# Get Up and running Laravel in Docker with Postgres and other tools.
+# Get up and running with Laravel in Docker 
+## Includes Postgres and other tools.
 
 🚀 Add to your Laravel project and Profit
 
-## How To Setup
+### How To Setup
 
 1. Append the .env.example to your .env file in your Laravel Project
 2. Copy all other files and the docker-files folder contents to the root of your Laravel project
@@ -11,7 +12,7 @@
 5. Go to `http://localhost`
 6. Build your empire
 
-## Other interesting commands
+### Other interesting commands
 
 `./dock ssh php`
 
@@ -21,7 +22,7 @@
 
 `./dock npm install`
 
-## Batteries included
+### Batteries included
 
 - PHP 7.4 (w/ XDebug support soon)
 - Composer (Dependency Manager for PHP)
@@ -32,7 +33,7 @@
 - Mailhog (Emulate and read emails sent)
 - Adminer (Web interface to manage your database)
 
-## Dock shell script list of commands
+### Dock shell script list of commands
 
 Usage: `dock <command>`
 
