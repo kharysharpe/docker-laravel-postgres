@@ -1,0 +1,221 @@
+#!/bin/bash
+#!/
+
+if [ "$1" = "rebuild" ]
+then
+  echo "Building containers without using cache"
+  docker-compose -f docker-compose.yml build --no-cache ${2}
+  exit 0
+fi
+
+if [ "$1" = "rebuild:dev" ]
+then
+  echo "Building containers without using cache"
+  docker-compose -f docker-compose.yml -f docker-compose-local.yml build --no-cache ${2}
+  exit 0
+fi
+
+if [ "$1" = "build" ]
+then
+  echo "Builiding containers"
+  docker-compose -f docker-compose.yml build ${2}
+  exit 0
+fi
+
+if [ "$1" = "build:dev" ]
+then
+  echo "Builiding containers"
+  docker-compose -f docker-compose.yml -f docker-compose-local.yml build ${2}
+  exit 0
+fi
+
+if [ "$1" = "watch" ]
+then
+  echo "Watching container logs"
+  docker-compose logs --follow ${2}
+  exit 0
+fi
+
+if [ "$1" = "watch:dev" ]
+then
+  echo "Starting containers"
+  docker-compose -f docker-compose.yml -f docker-compose-local.yml up ${2}
+  exit 0
+fi
+
+if [ "$1" = "start" ]
+then
+  echo "Starting containers"
+  docker-compose -f docker-compose.yml up -d ${2} && docker ps
+  exit 0
+fi
+
+if [ "$1" = "start:dev" ]
+then
+  echo "Starting containers"
+  docker-compose -f docker-compose.yml -f docker-compose-local.yml up -d ${2}
+  exit 0
+fi
+
+if [ "$1" = "stop" ]
+then
+  echo "Stopping containers"
+  docker-compose -f docker-compose.yml -f docker-compose-local.yml stop ${2} && docker-compose rm -f ${2} && docker ps
+  exit 0
+fi
+
+if [ "$1" = "halt" ]
+then
+  echo "Halting all containers"
+  docker-compose -f docker-compose.yml -f docker-compose-local.yml stop $(docker ps -q) && docker-compose rm -f $(docker ps -q) && docker ps
+  exit 0
+fi
+
+if [ "$1" = "restart" ]
+then
+  echo "Restarting containers"
+  ./dock stop ${2} && sh dock start ${2}
+  exit 0
+fi
+
+if [ "$1" = "restart:dev" ]
+then
+  echo "Restarting containers"
+  ./dock stop ${2} && sh dock start:dev ${2}
+  exit 0
+fi
+
+if [ "$1" = "status" ]
+then
+  echo "Loading container status"
+  docker ps
+  exit 0
+fi
+
+if [ "$1" = "kill-all" ]
+then
+  echo "Terminate all containers"
+  docker kill $(docker ps -q) && docker ps
+  exit 0
+fi
+
+if [ "$1" = "clean" ]
+then
+  echo "Removing all unused containers, images, cache, networks etc."
+  docker system prune
+  exit 0
+fi
+
+if [ "$1" = "clean:images" ]
+then
+  echo "Erasing all images"
+  docker rmi -f $(docker images -q)
+  exit 0
+fi
+
+if [ "$1" = "ssh" ]
+then
+  echo "Jumping into container"
+  docker exec -it ${2} bash
+  exit 0
+fi
+
+if [ "$1" = "artisan" ]
+then
+  echo "Running Laravel PHP artisan command"  
+  docker exec -it php php artisan $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14} ${15} ${16} ${17} ${18} ${19} ${20}
+  exit 0
+fi
+
+if [ "$1" = "composer" ]
+then
+  echo "Running composer"
+  docker exec -it php composer $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14} ${15} ${16} ${17} ${18} ${19} ${20}
+  exit 0
+fi
+
+if [ "$1" = "phpunit" ]
+then
+  echo "Running composer"
+  docker exec -it php phpunit $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14} ${15} ${16} ${17} ${18} ${19} ${20}
+  exit 0
+fi
+
+if [ "$1" = "npm" ]
+then
+  echo "Running NPM"
+  docker exec -it php npm $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14} ${15} ${16} ${17} ${18} ${19} ${20}
+  exit 0
+fi
+
+if [ "$1" = "exec" ]
+then
+  echo "Executing command ${2} ..."
+  docker exec -it php $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14} ${15} ${16} ${17} ${18} ${19} ${20} ${21}
+  exit 0
+fi
+
+if [ ! -z "$1" ]
+then
+  echo "Uknown command ${1} ..."
+fi
+
+
+echo ""
+echo ""
+echo "Usage: dock <command>"
+echo ""
+echo "e.g. "
+echo "./dock status"
+echo ""
+echo ""
+echo "List of Commands:"
+echo ""
+echo "build .................. Build containers for production"
+echo "build:dev .............. Build containers for development"
+echo ""
+echo "rebuild ................ Build containers for production without using cache"
+echo "rebuild:dev ............ Build containers for development without using cache"
+echo ""
+echo "watch .................. Bring production up and attached"
+echo "watch:dev .............. Bring development up and attached"
+echo ""
+echo ""
+echo "start .................. Bring container up and detached"
+echo "stop ................... Stop containers"
+echo "halt ................... Force stop all containers"
+echo "kill-all ............... Terminate all containers"
+echo "restart ................ Restart containers"
+echo "status ................. Container status"
+echo ""
+echo ""
+echo "ssh .................... Start a bash shell"
+echo "exec ................... Executes a command in the shell"
+echo ""
+echo ""
+echo "clean .................. Prune containers, images, cache etc."
+echo "clean:images ........... Erase all images"
+echo ""
+echo ""
+echo ""
+echo "artisan ................ Run php artisan command"
+echo "composer ............... Run composer command"
+echo "phpunit ................ Run phpunit command"
+echo "npm .................... Run npm command"
+echo ""
+echo ""
+echo ""
+echo ""
+echo "Examples:"
+echo ""
+echo "./dock rebuild:dev"
+echo "./dock start:dev"
+echo "./dock status"
+echo "./dock stop"
+echo "./dock ssh app"
+echo "./dock artisan route:list"
+echo "./dock composer require wisecompany/anvil"
+echo "./dock npm install"
+echo "" 
+
+exit 0

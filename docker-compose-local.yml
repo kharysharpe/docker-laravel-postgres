@@ -1,0 +1,53 @@
+version: "3"
+
+services:
+  web:
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+  php:
+    build:
+      args:
+        XDEBUG_HOST: ${XDEBUG_HOST}
+        XDEBUG_CONF: conf.d
+    cap_add:
+      - SYS_ADMIN
+    ports:
+      - "3000:3000"
+      - "3001:3001"
+  postgres:
+    ports:
+      - "5432:5432"
+  adminer:
+    container_name: adminer
+    image: adminer
+    restart: always
+    environment:
+      ADMINER_DESIGN: "pepa-linha"
+      ADMINER_PLUGINS: "enum-types enum-option edit-calendar tables-filter dump-json"
+    ports:
+      - 8765:8080
+    networks:
+      - frontend
+      - backend
+  mailhog:
+    container_name: mailhog
+    image: mailhog/mailhog
+    restart: always
+    ports:
+      - 1025:1025
+      - 8025:8025
+    networks:
+      - frontend
+  browser:
+    container_name: browser
+    build: ./docker-files/docker/browser
+    restart: always
+    environment:
+      VNC_NO_PASSWORD: 1
+    ports:
+      - 4444:4444
+      - 5900:5900
+    networks:
+      - frontend
+      - backend

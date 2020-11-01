@@ -1,0 +1,54 @@
+version: "3"
+
+services:
+  web:
+    container_name: web
+    depends_on:
+      - php
+      - postgres
+    build:
+      context: ./docker-files/docker/nginx
+      args:
+        BUILD_ENV: PRODUCTION
+    restart: always
+    environment:
+      NGINX_PORT: 8080
+      NGINX_HOST: "localhost"
+    ports:
+      - "${DOCKER_HTTP_PORT}:8080"
+      - "${DOCKER_HTTPS_PORT}:8443"
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - frontend
+      - backend
+  php:
+    container_name: php
+    build: ./docker-files/docker/php
+    restart: always
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - backend
+      - frontend
+  postgres:
+    container_name: postgres
+    environment:
+      POSTGRES_DB: ${DOCKER_POSTGRES_DB}
+      POSTGRES_USER: ${DOCKER_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${DOCKER_POSTGRES_PASSWORD}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    build: ./docker-files/docker/postgres
+    restart: always
+    volumes:
+      - ./docker-files/storage/postgresql:/var/lib/postgresql/data
+    ports:
+      - "${DOCKER_POSTGRES_EXTERNAL_PORT}:${DOCKER_POSTGRES_INTERNAL_PORT}"
+    networks:
+      - backend
+
+networks:
+  frontend:
+    driver: ${DOCKER_NETWORKS_DRIVER}
+  backend:
+    driver: ${DOCKER_NETWORKS_DRIVER}
