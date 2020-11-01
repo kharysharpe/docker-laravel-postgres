@@ -1,7 +1,7 @@
 # Get up and running with Laravel in Docker 
 ## Includes Postgres and other tools.
 
-🚀 Add to your Laravel project and Profit
+Larvel and Docker simplified 
 
 ### How To Setup
 
