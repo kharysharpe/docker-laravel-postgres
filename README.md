@@ -1,4 +1,4 @@
-# Docker Laravel and Postgres Quick Start Kit
+# Get Up and running Laravel in Docker with Postgres and other tools.
 
 🚀 Add to your Laravel project and Profit
 
