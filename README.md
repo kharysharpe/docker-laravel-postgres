@@ -24,13 +24,13 @@
 ## Batteries included
 
 - PHP 7.4 (w/ XDebug support soon)
-- Composer
-- NPM
+- Composer (Dependency Manager for PHP)
+- NPM (Node package manager)
 - Headless Chrome Browser (For running Laravel Dusk tests)
-- Nginx
-- PostgreSql
-- Mailhog to view emails sent
-- Adminer to manage your database
+- Nginx (Web server)
+- PostgreSql (Database Server)
+- Mailhog (Emulate and read emails sent)
+- Adminer (Web interface to manage your database)
 
 ## Dock shell script list of commands
 
