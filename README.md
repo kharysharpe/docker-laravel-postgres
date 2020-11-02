@@ -1,16 +1,18 @@
-# Get up and running with Laravel in Docker 
+# Get up and running with Laravel in Docker
+
 ## Includes Postgres and other tools.
 
-Laravel and Docker simplified 
+Laravel and Docker simplified
 
 ### How To Setup
 
-1. Append the .env.example to your .env file in your Laravel Project
+1. Append the .env.docker.example to your .env file in your Laravel Project
 2. Copy all other files and the docker-files folder contents to the root of your Laravel project
-3. Run `./dock build:dev` to create the containers (This may take awhile ☕️)
-4. Run `./dock start:dev` to start the containers (Also try `./dock watch:dev` to see logs)
-5. Go to `http://localhost`
-6. Build your empire
+3. Change to your laravel project
+4. Run `./dock build:dev` to create the containers (This may take awhile ☕️)
+5. Run `./dock watch:dev` to start the containers (Also try `./dock start:dev` to start it in the background)
+6. Go to `http://localhost`
+7. Build your empire
 
 ### Other interesting commands
 
@@ -36,6 +38,8 @@ Laravel and Docker simplified
 ### Dock shell script list of commands
 
 Usage: `dock <command>`
+
+```
 
 build .................. Build containers for production
 
@@ -76,3 +80,4 @@ composer ............... Run composer command
 phpunit ................ Run phpunit command
 
 npm .................... Run npm command
+```
