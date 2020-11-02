@@ -29,9 +29,12 @@ Laravel and Docker simplified
 
 ### Dock shell script list of commands
 
-Usage: `dock <command> <option>`
+Usage:
+
+\$ ./dock **command** _[option]_
 
 Examples:
+
 `./dock build`
 
 `./dock build php`
@@ -44,27 +47,27 @@ Examples:
 
 `./dock npm install`
 
-| Command      | Description                                                                                 |
-| ------------ | ------------------------------------------------------------------------------------------- |
-| build        | Build containers for production e.g. `./dock build`                                         |
-| build:dev    | Build containers for development e.g. `./dock build:dev`                                    |
-| rebuild      | Build containers for production without using cache e.g. `./dock rebuild`                   |
-| rebuild:dev  | Build containers for development without using cache e.g. `./dock rebuild:dev php`          |
-| watch        | Bring production up and attached e.g. `./dock watch`                                        |
-| watch:dev    | Bring development up and attached e.g. `./dock watch:dev`                                   |
-| start        | Bring container for production up and detached e.g. `./dock start`                          |
-| start:dev    | Bring container for development up and detached e.g. `./dock start:dev`                     |
-| stop         | Stop containers e.g `./dock stop <container>`, `./dock stop web`                            |
-| halt         | Force stop all containers e.g. `./dock halt`                                                |
-| kill-all     | Terminate all containers e.g. `./dock kill-all`                                             |
-| restart      | Restart containers for production e.g. `./dock restart`                                     |
-| restart:dev  | Restart containers for development e.g. `./dock restart:dev`                                |
-| status       | Container status e.g. `./dock status`                                                       |
-| ssh          | Start a bash shell e.g. `./dock ssh <container>`, `./dock ssh web`                          |
-| exec         | Executes a command in the php container e.g. `./dock exec <command> `, `./dock exec ls -l ` |
-| clean        | Prune containers, images, cache etc. e.g. `./dock clean`                                    |
-| clean:images | Erase all images e.g. `./dock clean:images`                                                 |
-| artisan      | Run php artisan command e.g. `./dock artisan migrate:fresh --seed`                          |
-| composer     | Run composer command e.g. `./dock composer dump-autoload`                                   |
-| phpunit      | Run phpunit command e.g. `./dock phpunit -v --stop-on-failure --filter=ExampleTest`         |
-| npm          | Run npm command e.g. `./dock npm install`                                                   |
+| Command                   | Description                                                                                 |
+| ------------------------- | ------------------------------------------------------------------------------------------- |
+| build _[container]_       | Build containers for production e.g. `./dock build`                                         |
+| build:dev _[container]_   | Build containers for development e.g. `./dock build:dev`                                    |
+| rebuild _[container]_     | Build containers for production without using cache e.g. `./dock rebuild`                   |
+| rebuild:dev _[container]_ | Build containers for development without using cache e.g. `./dock rebuild:dev php`          |
+| watch _[container]_       | Bring production up and attached e.g. `./dock watch`                                        |
+| watch:dev _[container]_   | Bring development up and attached e.g. `./dock watch:dev`                                   |
+| start _[container]_       | Bring container for production up and detached e.g. `./dock start`                          |
+| start:dev _[container]_   | Bring container for development up and detached e.g. `./dock start:dev`                     |
+| stop                      | Stop containers e.g `./dock stop`                                                           |
+| halt                      | Force stop all containers e.g. `./dock halt`                                                |
+| kill-all                  | Terminate all containers e.g. `./dock kill-all`                                             |
+| restart _[container]_     | Restart containers for production e.g. `./dock restart`                                     |
+| restart:dev _[container]_ | Restart containers for development e.g. `./dock restart:dev`                                |
+| status                    | Container status e.g. `./dock status`                                                       |
+| ssh container             | Start a bash shell e.g. `./dock ssh web`                                                    |
+| exec command options      | Executes a command in the php container e.g. `./dock exec <command> `, `./dock exec ls -l ` |
+| clean                     | Prune containers, images, cache etc. e.g. `./dock clean`                                    |
+| clean:images              | Erase all images e.g. `./dock clean:images`                                                 |
+| artisan _[options]_       | Run php artisan command e.g. `./dock artisan migrate:fresh --seed`                          |
+| composer options          | Run composer command e.g. `./dock composer dump-autoload`                                   |
+| phpunit _[options]_       | Run phpunit command e.g. `./dock phpunit -v --stop-on-failure --filter=ExampleTest`         |
+| npm options               | Run npm command e.g. `./dock npm install`                                                   |
