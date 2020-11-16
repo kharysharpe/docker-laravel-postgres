@@ -33,6 +33,7 @@ if [ "$1" = "watch" ]
 then
   echo "Watching container logs"
   docker-compose logs --follow ${2}
+  ./dock stop
   exit 0
 fi
 
@@ -40,13 +41,14 @@ if [ "$1" = "watch:dev" ]
 then
   echo "Starting containers"
   docker-compose -f docker-compose.yml -f docker-compose-local.yml up ${2}
+  ./dock stop
   exit 0
 fi
 
 if [ "$1" = "start" ]
 then
   echo "Starting containers"
-  docker-compose -f docker-compose.yml up -d ${2} && docker ps
+  docker-compose -f docker-compose.yml up -d ${2} && docker ps -a
   exit 0
 fi
 
@@ -60,14 +62,7 @@ fi
 if [ "$1" = "stop" ]
 then
   echo "Stopping containers"
-  docker-compose -f docker-compose.yml -f docker-compose-local.yml stop ${2} && docker-compose rm -f ${2} && docker ps
-  exit 0
-fi
-
-if [ "$1" = "halt" ]
-then
-  echo "Halting all containers"
-  docker-compose -f docker-compose.yml -f docker-compose-local.yml stop $(docker ps -q) && docker-compose rm -f $(docker ps -q) && docker ps
+  docker-compose -f docker-compose.yml -f docker-compose-local.yml stop ${2} && docker-compose -f docker-compose.yml -f docker-compose-local.yml rm --force ${2} && docker ps -a
   exit 0
 fi
 
@@ -88,14 +83,14 @@ fi
 if [ "$1" = "status" ]
 then
   echo "Loading container status"
-  docker ps
+  docker ps -a
   exit 0
 fi
 
 if [ "$1" = "kill-all" ]
 then
   echo "Terminate all containers"
-  docker kill $(docker ps -q) && docker ps
+  docker kill $(docker ps -q) && docker ps -a
   exit 0
 fi
 
@@ -136,7 +131,7 @@ fi
 
 if [ "$1" = "phpunit" ]
 then
-  echo "Running composer"
+  echo "Running phpunit"
   docker exec -it php phpunit $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14} ${15} ${16} ${17} ${18} ${19} ${20}
   exit 0
 fi
@@ -148,10 +143,53 @@ then
   exit 0
 fi
 
+if [ "$1" = "cypress:run" ]
+then
+  echo "Running cypress:run"
+  docker run -it -v $PWD:/e2e -w /e2e cypress/included:5.5.0 $@
+  exit 0
+fi
+
+if [ "$1" = "cypress:open" ]
+then
+  echo "Running cypress:open"
+  IP=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')
+    # this assumes that X11 server allows connections over the network
+    # after we execute "/usr/X11/bin/xhost + $IP"
+    DISPLAY=$IP:0
+
+    # explanation of the "docker run" command line arguments
+    #
+    #  -it          = interactive terminal
+    #  -v $PWD:/e2e = map current folder to /e2e inside the container
+    #  -v /tmp/.X11-unix:/tmp/.X11-unix = map X11 socket file to communicate
+    #  -w /e2e      = set working directy to /e2e
+    #  -e DISPLAY   = pass environment variable DISPLAY to the container
+    #  --entrypoint cypress = run "cypress" command
+    #     with arguments AFTER Docker image name
+    #     in our case they are "--project ." to point globally installed Cypress
+    #     at the current working directory /e2e inside the container
+    docker run -it \
+      -v $PWD:/e2e \
+      -v /tmp/.X11-unix:/tmp/.X11-unix \
+      -w /e2e \
+      -e DISPLAY \
+      --entrypoint cypress \
+      cypress/included:5.5.0 open --project . 
+    exit 0
+fi
+
+if [ "$1" = "run" ]
+then
+  echo "Running command ${2} ..."
+  docker exec -it php $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14} ${15} ${16} ${17} ${18} ${19} ${20} ${21}
+  exit 0
+fi
+
 if [ "$1" = "exec" ]
 then
   echo "Executing command ${2} ..."
-  docker exec -it php $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14} ${15} ${16} ${17} ${18} ${19} ${20} ${21}
+  docker exec php $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14} ${15} ${16} ${17} ${18} ${19} ${20} ${21}
   exit 0
 fi
 
