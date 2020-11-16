@@ -51,3 +51,15 @@ services:
     networks:
       - frontend
       - backend
+  cypress:
+    container_name: cypress
+    depends_on:
+      - web
+      - php
+      - postgres
+    build:
+      context: ./docker-files/docker/cypress
+    volumes:
+      - ./:/e2e
+    networks:
+      - frontend
